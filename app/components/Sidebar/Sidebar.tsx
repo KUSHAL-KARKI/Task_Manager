@@ -1,235 +1,63 @@
 "use client";
-
 import React from "react";
-import styled from "styled-components";
-import { useGlobalState } from "../../Context/GlobalProvider";
 import Image from "next/image";
-import Link from "next/link";
 import menu from "@/app/utils/menu";
 import { usePathname, useRouter } from "next/navigation";
-import Button from "../buttons/Button";
-import { logout } from "@/app/utils/Icons";
-import { useClerk } from "@clerk/nextjs";
+import { arrowLeft, bars, logout } from "@/app/utils/Icons";
+import { useClerk, UserButton, useUser } from "@clerk/nextjs";
 
 const Sidebar = () => {
-  const { theme } = useGlobalState();
   const router = useRouter();
   const pathname = usePathname();
   const { signOut } = useClerk();
+  const { user } = useUser();
+  const firstName = user?.firstName || "";
+  const lastName = user?.lastName || "";
+  const imageUrl = user?.imageUrl || "/default-profile.png";
 
   const handleClick = (link: string) => {
     router.push(link);
   };
 
   return (
-    <SidebarStyled theme={theme}>
-      <div className="profile">
-        <div className="profile-overlay"></div>
-        <div className="image">
-          <Image
-            src="/globe.svg"
-            alt="Profile"
-            width={70}
-            height={70}
-            className="profile-image"
-          />
+    <div className=" drawer lg:drawer-open flex flex-col justify-between relative rounded-2xl border-2 w-[300px] h-screen">
+      <div className="m-6 px-4 py-3 relative flex items-center">
+        <div className=" absolute top-0 left-0 w-[100%]  h-[100%] border-2 opacity-5 backdrop-blur-xl rounded-2xl hover:opacity-5"></div>
+        <div className="relative z-10 flex shrink-0 overflow-hidden rounded-full w-[70px] h-[70px]">
+              <div className="absolute top-0 h-full w-full">
+          <UserButton />
         </div>
-        <h1>
-          <span> KUSHAL </span>
-          <span> KARKI </span>
+        </div>
+    
+        <h1 className="relative z-10 flex flex-col ml-5 text-2xl font-bold text-gray-800 dark:text-gray-200">
+          <span> {firstName}</span>
+          <span> {lastName}</span>
         </h1>
       </div>
 
-      <ul className="nav-items">
+      <ul className="navbar relative mx-1.5 my-0 grid grid-cols-1 p-8 cursor-pointer">
         {menu.map((item) => {
           const link = item.link;
           return (
             <li
               key={item.id}
-              className={`nav-item ${pathname === link ? "active" : ""}`}
+              className=" h-16 p-5 w-56 flex items-center justify-start text-xl font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200 ease-in-out"
               onClick={() => handleClick(link)}
             >
               {item.icon}
-              <span className="nav-text">{item.title}</span>
+              <span className="m-4">{item.title}</span>
             </li>
           );
         })}
       </ul>
 
-      <div className="sign-out relative m-6">
-        <Button
-          name={"Sign Out"}
-          type={"submit"}
-          padding={"0.4rem 0.8rem"}
-          borderRad={"0.8rem"}
-          fw={"500"}
-          fs={"1.2rem"}
-          icon={logout}
-          click={() => signOut(() => router.push("/signin"))}
-        />
+      <div className="relative text-2xl">
+        <button onClick={() => signOut(() => router.push("/signin"))} className="">
+          {logout} signout
+        </button>
       </div>
-    </SidebarStyled>
+    </div>
   );
 };
-
-const SidebarStyled = styled.nav`
-  width: ${(props) => props.theme.sidebarWidth};
-  background-color: ${(props) => props.theme.colorBorder};
-  border: 2px solid ${(props) => props.theme.borderColor2};
-  border-radius: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  color: ${(props) => props.theme.colorGrey3};
-
-  .profile {
-    margin: 1.5rem;
-    padding: 1rem 0.8rem;
-    position: relative;
-    border-radius: 1rem;
-    cursor: pointer;
-
-    font-weight: 500;
-    color: ${(props) => props.theme.colorGrey0};
-
-    display: flex;
-    align-items: center;
-
-    .profile-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      backdrop-filter: blur(10px);
-      z-index: 0;
-      background: ${(props) => props.theme.colorBg3};
-      transition: all 0.55s linear;
-      border-radius: 1rem;
-      border: 2px solid ${(props) => props.theme.borderColor2};
-
-      opacity: 0.2;
-    }
-
-    h1 {
-      font-size: 1.2rem;
-      display: flex;
-      flex-direction: column;
-
-      line-height: 1.4rem;
-    }
-
-    .image,
-    h1 {
-      position: relative;
-      z-index: 1;
-    }
-
-    .image {
-      flex-shrink: 0;
-      display: inline-block;
-      overflow: hidden;
-      transition: all 0.5s ease;
-      border-radius: 100%;
-
-      width: 70px;
-      height: 70px;
-
-      img {
-        border-radius: 100%;
-        transition: all 0.5s ease;
-      }
-    }
-
-    > h1 {
-      margin-left: 0.8rem;
-      font-size: clamp(1.2rem, 4vw, 1.4rem);
-      line-height: 100%;
-    }
-
-    &:hover {
-      .profile-overlay {
-        opacity: 1;
-        border: 2px solid ${(props) => props.theme.borderColor2};
-      }
-
-      img {
-        transform: scale(1.1);
-      }
-    }
-  }
-
-  .nav-item {
-    position: relative;
-    padding: 0.8rem 1rem 0.9rem 2.1rem;
-    margin: 0.3rem 0;
-
-    display: grid;
-    grid-template-columns: 40px 1fr;
-    cursor: pointer;
-    align-items: center;
-
-    &::after {
-      position: absolute;
-      content: "";
-      left: 0;
-      top: 0;
-      width: 0;
-      height: 100%;
-      background-color: ${(props) => props.theme.activeNavLinkHover};
-      z-index: 1;
-      transition: all 0.3s ease-in-out;
-    }
-
-    &::before {
-      position: absolute;
-      content: "";
-      right: 0;
-      top: 0;
-      width: 0%;
-      height: 100%;
-      background-color: ${(props) => props.theme.colorGreenDark};
-
-      border-bottom-left-radius: 5px;
-      border-top-left-radius: 5px;
-    }
-
-    a {
-      font-weight: 500;
-      transition: all 0.3s ease-in-out;
-      z-index: 2;
-      line-height: 0;
-    }
-
-    i {
-      display: flex;
-      align-items: center;
-      color: ${(props) => props.theme.colorIcons};
-    }
-
-    &:hover {
-      &::after {
-        width: 100%;
-      }
-    }
-  }
-
-  .active {
-    background-color: ${(props) => props.theme.activeNavLink};
-
-    i,
-    a {
-      color: ${(props) => props.theme.colorIcons2};
-    }
-  }
-
-  .active::before {
-    width: 0.3rem;
-  }
-
-  > button {
-    margin: 1.5rem;
-  }
-`;
 
 export default Sidebar;

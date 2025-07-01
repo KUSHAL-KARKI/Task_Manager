@@ -6,8 +6,6 @@ import ContextProvider from "./provider/ContextProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "react-hot-toast";
 import { auth } from "@clerk/nextjs/server";
-import NextTopLoader from "nextjs-toploader";
-
 const nunito = Nunito({
   weight: ["400", "500", "600", "700", "800"],
   subsets: ["latin"],
@@ -32,16 +30,11 @@ export default async function RootLayout({
           />
         </head>
         <body className={nunito.className}>
-          <NextTopLoader
-            height={2}
-            color="red"
-            easing="cubic-bezier(0.53,0.21,0,1)"
-          />
           <ContextProvider>
             <GlobalStyleProvider>
               <Toaster />
               {userId && <Sidebar />}
-              <div className="w-full">{children}</div>
+              {children}
             </GlobalStyleProvider>
           </ContextProvider>
         </body>

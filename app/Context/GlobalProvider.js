@@ -3,13 +3,10 @@ import React, { useEffect } from "react";
 import { createContext, useContext, useState } from "react";
 export const GlobalContext = createContext();
 export const GlobalUpdateContext = createContext();
-import themes from "./themes";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useUser } from "@clerk/nextjs";
 const GlobalProvider = ({ children }) => {
-  const [selectedTheme, setSelectedTheme] = useState(0);
-  const theme = themes[selectedTheme];
   const [isLoading, setIsLoading] = useState(false);
   const [modal, setModal] = useState(false);
   const [tasks, setTasks] = useState([]);
@@ -67,11 +64,10 @@ const GlobalProvider = ({ children }) => {
     if (user) {
       allTasks();
     }
-  }, [user]);
+  }, [user,tasks]);
   return (
     <GlobalContext.Provider
       value={{
-        theme,
         tasks,
         isLoading,
         deleteTask,
@@ -82,8 +78,6 @@ const GlobalProvider = ({ children }) => {
         completedTasks,
         importantTasks,
         incompleteTasks,
-        selectedTheme,
-        setSelectedTheme,
         collapseMenu,
       }}
     >
