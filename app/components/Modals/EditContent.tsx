@@ -1,18 +1,30 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { add } from "@/app/utils/Icons";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useGlobalState } from "@/app/Context/GlobalProvider";
 
-const CreateContent = () => {
-  const {allTasks, closeModal} = useGlobalState();
+const EditContent = () => {
+  const { allTasks, closeModal, editTask } = useGlobalState();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [completed, setCompleted] = useState(false);
   const [important, setImportant] = useState(false);
+
+  useEffect(() => {
+    if (editTask) {
+      setTitle(editTask.title || "");
+      setDescription(editTask.description || "");
+      setDate(
+        editTask.date ? new Date(editTask.date).toISOString().split("T")[0] : ""
+      );
+      setCompleted(editTask.isCompleted || false);
+      setImportant(editTask.isImportant || false);
+    }
+  }, [editTask]);
 
   const handleChange = (name: string) => (e: any) => {
     switch (name) {
@@ -42,21 +54,15 @@ const CreateContent = () => {
       title,
       description,
       date: date ? new Date(date).toISOString() : undefined,
-      completed,
-      important,
+      isCompleted: completed,
+      isImportant: important,
     };
     try {
-      const response = await axios.post("/api/tasks", task);
+      const response = await axios.put(`/api/tasks/${editTask.id}`, task);
       if (response.data.error) {
         toast.error(response.data.error);
       } else {
-        toast.success("Task created successfully!");
-        // Reset form
-        setTitle("");
-        setDescription("");
-        setDate("");
-        setCompleted(false);
-        setImportant(false);
+        toast.success("Task updated successfully!");
         await allTasks();
         closeModal();
       }
@@ -71,7 +77,7 @@ const CreateContent = () => {
       onSubmit={handleSubmit}
       className="w-full max-w-xl p-8 bg-base-200 rounded-2xl shadow-lg space-y-6"
     >
-      <h1 className="text-3xl font-bold mb-2">Create Task</h1>
+      <h1 className="text-3xl font-bold mb-2">Update Task</h1>
 
       <div>
         <label htmlFor="title" className="block mb-1 text-lg font-medium">
@@ -137,8 +143,8 @@ const CreateContent = () => {
         </label>
       </div>
 
-      <div className="flex justify-end gap-3 pt-4">
-         <button
+      <div className="flex justify-between items-center gap-4 mt-4">
+        <button
           type="button"
           onClick={closeModal}
           className="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
@@ -151,11 +157,11 @@ const CreateContent = () => {
           className="btn btn-primary flex items-center gap-2"
         >
           <span className="icon">{add}</span>
-          Create Task
+          Update Task
         </button>
       </div>
     </form>
   );
 };
 
-export default CreateContent;
+export default EditContent;

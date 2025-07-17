@@ -2,22 +2,21 @@
 
 import { useGlobalState } from "@/app/Context/GlobalProvider";
 import React from "react";
-import styled from "styled-components";
-import TaskItem from "../taskItem/TaskItem";
-import { plus } from "@/app/utils/Icons";
+import TaskItem from "../taskItem/TaskItem"; 
 import Modal from "../Modals/Modal";
 import CreateContent from "../Modals/CreateContent";
+import EditContent from "../Modals/EditContent";
 
 interface props {
   title: string;
   tasks: any[];
 }
 const Tasks = ({ title, tasks = [] }: props) => {
-  const { theme, modal, openModal } = useGlobalState();
+  const {modal, openModal,editTask } = useGlobalState();
 
   return (
     <div className="flex flex-col relative h-screen w-screen border-[2px] rounded-lg p-[2rem] overflow-y-auto shadow-lg">
-      {modal && <Modal content={<CreateContent />} />}
+      {modal && <Modal content={editTask ? <EditContent /> :<CreateContent />} />}
       <h1 className="text-4xl font-bold underline decoration-green-500 underline-offset-[10px]">
         {title}
       </h1>
@@ -29,6 +28,7 @@ const Tasks = ({ title, tasks = [] }: props) => {
             description={task.description}
             date={task.date}
             isCompleted={task.isCompleted}
+            isImportant={task.isImportant}
             id={task.id}
           />
         ))}

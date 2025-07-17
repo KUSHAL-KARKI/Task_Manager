@@ -9,23 +9,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized", status: 401 });
     }
     const { title, description, date, completed, important } = await req.json();
-    console.log("Creating task for user:", userId);
-    console.log("Task details:", {
-      title,
-      description,
-      date,
-      completed,
-      important,
-    });
     if (!title || !description || !date) {
       return NextResponse.json({
         error: "Missing required fields",
         status: 400,
       });
     }
-    if (title.length < 3) {
+    if (title.length < 3 || title.length > 20) {
       return NextResponse.json({
-        error: "Title must be at least 3 characters long",
+        error: "Title must be at least 3 characters and at most 20 characters",
         status: 400,
       });
     }

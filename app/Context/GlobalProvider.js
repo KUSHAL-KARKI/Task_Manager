@@ -11,6 +11,7 @@ const GlobalProvider = ({ children }) => {
   const [modal, setModal] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [collapsed, setCollapsed] = useState(false);
+  const [editTask, setEditTask] = useState(null);
   const { user } = useUser();
 
   const allTasks = async () => {
@@ -46,12 +47,29 @@ const GlobalProvider = ({ children }) => {
     }
   };
 
+  const updateFullTask = async(task) => {
+    try {
+      const res = await axios.put(`/api/tasks/${task.id}`, task);
+      allTasks();
+      toast.success("Task updated successfully");
+    } catch (error) {
+      console.error("Error updating task:", error);
+      toast.error("Failed to update task");
+    }
+  }
+  const openEditModal = (task) => {
+    setEditTask(task);
+    setModal(true);
+ 
+  }
   const openModal = () => {
+    setEditTask(null);
     setModal(true);
   };
 
   const closeModal = () => {
     setModal(false);
+    setEditTask(null);
   };
   const collapseMenu = () => {
     setCollapsed(!collapsed);
@@ -64,7 +82,7 @@ const GlobalProvider = ({ children }) => {
     if (user) {
       allTasks();
     }
-  }, [user,tasks]);
+  }, [user]);
   return (
     <GlobalContext.Provider
       value={{
@@ -79,6 +97,10 @@ const GlobalProvider = ({ children }) => {
         importantTasks,
         incompleteTasks,
         collapseMenu,
+        allTasks,
+        updateFullTask,
+        openEditModal,
+        editTask
       }}
     >
       <GlobalUpdateContext.Provider value={{}}>

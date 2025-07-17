@@ -1,11 +1,10 @@
 import { Nunito } from "next/font/google";
 import "./globals.css";
-import GlobalStyleProvider from "./provider/GlobalStyleProvider";
 import Sidebar from "./components/Sidebar/Sidebar";
-import ContextProvider from "./provider/ContextProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "react-hot-toast";
 import { auth } from "@clerk/nextjs/server";
+import GlobalProvider from "./Context/GlobalProvider";
 const nunito = Nunito({
   weight: ["400", "500", "600", "700", "800"],
   subsets: ["latin"],
@@ -30,13 +29,13 @@ export default async function RootLayout({
           />
         </head>
         <body className={nunito.className}>
-          <ContextProvider>
-            <GlobalStyleProvider>
+          <GlobalProvider>
+            <div className="flex min-h-screen">
               <Toaster />
               {userId && <Sidebar />}
               {children}
-            </GlobalStyleProvider>
-          </ContextProvider>
+            </div>
+          </GlobalProvider>
         </body>
       </html>
     </ClerkProvider>
