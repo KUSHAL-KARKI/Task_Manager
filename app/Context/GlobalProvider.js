@@ -96,6 +96,7 @@ const GlobalProvider = ({ children }) => {
         completedTasks,
         importantTasks,
         incompleteTasks,
+        collapsed,
         collapseMenu,
         allTasks,
         updateFullTask,

@@ -15,7 +15,7 @@ function Modal({ content }: Props) {
         className="absolute top-0 left-0 w-full h-full bg-black/50 backdrop-blur-sm transition-opacity"
         onClick={closeModal}
       ></div>
-      <div className="relative z-60 w-full max-w-xl p-6 bg-base-100 rounded-2xl shadow-2xl border border-base-300">
+      <div className="relative z-60 w-full max-w-xl p-6 rounded-2xl shadow-2xl">
         {content}
       </div>
     </div>

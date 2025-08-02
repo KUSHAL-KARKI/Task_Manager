@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { add } from "@/app/utils/Icons";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useGlobalState } from "@/app/Context/GlobalProvider";
+import { IoMdAdd } from "react-icons/io";
 
 const CreateContent = () => {
-  const {allTasks, closeModal} = useGlobalState();
+  const { allTasks, closeModal } = useGlobalState();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
@@ -69,12 +69,12 @@ const CreateContent = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-xl p-8 bg-base-200 rounded-2xl shadow-lg space-y-6"
+      className="w-full max-w-xl p-8 bg-gray-900 rounded-2xl shadow-lg space-y-6 border border-gray-800"
     >
-      <h1 className="text-3xl font-bold mb-2">Create Task</h1>
+      <h1 className="text-3xl font-bold mb-2 text-white">Create Task</h1>
 
       <div>
-        <label htmlFor="title" className="block mb-1 text-lg font-medium">
+        <label htmlFor="title" className="block mb-1 text-lg font-medium text-gray-300">
           Title
         </label>
         <input
@@ -82,28 +82,28 @@ const CreateContent = () => {
           id="title"
           value={title}
           onChange={handleChange("title")}
-          className="input input-bordered w-full"
+          className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
           placeholder="Enter title"
           required
         />
       </div>
 
       <div>
-        <label htmlFor="description" className="block mb-1 text-lg font-medium">
+        <label htmlFor="description" className="block mb-1 text-lg font-medium text-gray-300">
           Description
         </label>
-        <input
-          type="text"
+        <textarea
           id="description"
           value={description}
           onChange={handleChange("description")}
-          className="input input-bordered w-full"
+          className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none h-24"
           placeholder="Describe your task"
+          rows={3}
         />
       </div>
 
       <div>
-        <label htmlFor="date" className="block mb-1 text-lg font-medium">
+        <label htmlFor="date" className="block mb-1 text-lg font-medium text-gray-300">
           Date
         </label>
         <input
@@ -111,7 +111,7 @@ const CreateContent = () => {
           id="date"
           value={date}
           onChange={handleChange("date")}
-          className="input input-bordered w-full"
+          className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
         />
       </div>
 
@@ -137,8 +137,8 @@ const CreateContent = () => {
         </label>
       </div>
 
-      <div className="flex justify-end gap-3 pt-4">
-         <button
+      <div className="flex justify-between items-center  pt-4">
+        <button
           type="button"
           onClick={closeModal}
           className="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
@@ -150,7 +150,10 @@ const CreateContent = () => {
           type="submit"
           className="btn btn-primary flex items-center gap-2"
         >
-          <span className="icon">{add}</span>
+          <span className="icon">
+            {" "}
+            <IoMdAdd />{" "}
+          </span>
           Create Task
         </button>
       </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { add } from "@/app/utils/Icons";
+import { IoMdAdd } from "react-icons/io";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useGlobalState } from "@/app/Context/GlobalProvider";
@@ -75,12 +75,12 @@ const EditContent = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-xl p-8 bg-base-200 rounded-2xl shadow-lg space-y-6"
+      className="w-full max-w-xl p-8 bg-gray-900 rounded-2xl shadow-lg space-y-6 border border-gray-800"
     >
-      <h1 className="text-3xl font-bold mb-2">Update Task</h1>
+      <h1 className="text-3xl font-bold mb-2 text-white">Update Task</h1>
 
       <div>
-        <label htmlFor="title" className="block mb-1 text-lg font-medium">
+        <label htmlFor="title" className="block mb-1 text-lg font-medium text-gray-300">
           Title
         </label>
         <input
@@ -88,28 +88,28 @@ const EditContent = () => {
           id="title"
           value={title}
           onChange={handleChange("title")}
-          className="input input-bordered w-full"
+          className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
           placeholder="Enter title"
           required
         />
       </div>
 
       <div>
-        <label htmlFor="description" className="block mb-1 text-lg font-medium">
+        <label htmlFor="description" className="block mb-1 text-lg font-medium text-gray-300">
           Description
         </label>
-        <input
-          type="text"
+      <textarea
           id="description"
           value={description}
           onChange={handleChange("description")}
-          className="input input-bordered w-full"
+          className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none h-24"
           placeholder="Describe your task"
+          rows={3}
         />
       </div>
 
       <div>
-        <label htmlFor="date" className="block mb-1 text-lg font-medium">
+        <label htmlFor="date" className="block mb-1 text-lg font-medium text-gray-300">
           Date
         </label>
         <input
@@ -117,7 +117,7 @@ const EditContent = () => {
           id="date"
           value={date}
           onChange={handleChange("date")}
-          className="input input-bordered w-full"
+          className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
         />
       </div>
 
@@ -156,7 +156,7 @@ const EditContent = () => {
           type="submit"
           className="btn btn-primary flex items-center gap-2"
         >
-          <span className="icon">{add}</span>
+          <span className="icon"> <IoMdAdd/> </span>
           Update Task
         </button>
       </div>
