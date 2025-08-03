@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { userId } = await auth();
@@ -29,12 +29,13 @@ export async function DELETE(
     return NextResponse.json(task);
   } catch (error) {
     console.error("Error in DELETE route:", error);
+    return NextResponse.json({ error: "Error deleting task" }, { status: 500 });
   }
 }
 
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { userId } = await auth();
