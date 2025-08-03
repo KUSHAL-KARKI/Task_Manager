@@ -9,6 +9,8 @@ import GlobalProvider from "./Context/GlobalProvider";
 const nunito = Nunito({
   weight: ["400", "500", "600", "700", "800"],
   subsets: ["latin"],
+  display: "swap",
+  variable: "--font-nunito",
 });
 
 export default async function RootLayout({
@@ -19,7 +21,7 @@ export default async function RootLayout({
   const { userId } = await auth();
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" className={nunito.variable}>
         <head>
           <title>Task Manager</title>
         </head>

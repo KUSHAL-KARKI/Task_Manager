@@ -101,6 +101,7 @@ const CreateContent = () => {
           rows={3}
         />
       </div>
+
       <div>
         <label htmlFor="date" className="block mb-1 text-lg font-medium text-gray-300">
           Date
